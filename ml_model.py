@@ -12,10 +12,10 @@ class LabelSuggestionModel:
     def load(self):
         self.data = pd.read_csv(self.csv_path)
 
-        # 🛡️ Remove duplicate headers if accidentally appended
+        # Remove "parent" rows
         self.data = self.data[self.data["parent"] != "parent"]
 
-        # 🔠 Normalize all labels to lowercase
+        # Convert to lowercase
         self.data["parent"] = self.data["parent"].str.lower()
 
         self.vectorizer = TfidfVectorizer()
