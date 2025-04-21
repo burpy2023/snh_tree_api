@@ -65,3 +65,18 @@ def test_duplicate_labels_disallowed():
     response = client.post("/api/tree", json={"label": "unique"})
     assert response.status_code == 400
     assert response.json()["detail"] == "Label must be unique"
+
+def test_ml_suggestions_work():
+    # Insert frog node
+    create_response = client.post("/api/tree", json={"label": "frog"})
+    assert create_response.status_code == 200
+    frog_id = create_response.json()["id"]
+
+    # Get suggestions for 'frog'
+    response = client.get("/api/tree/smart-suggestions", params={"parentId": frog_id})
+    assert response.status_code == 200
+    suggestions = response.json()
+    print("Suggestions returned:", suggestions)
+
+    # Validate
+    assert set(suggestions).intersection({"tadpole", "hop", "pond"})

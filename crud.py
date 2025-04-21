@@ -4,18 +4,19 @@ from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 
 def create_node(session: Session, data: TreeNodeCreate):
-    if data.parentId is not None:
-        parent = session.get(TreeNode, data.parentId)
+    parent_id = data.parentId if data.parentId not in [0, None] else None
+
+    if parent_id is not None:
+        parent = session.get(TreeNode, parent_id)
         if not parent:
             raise HTTPException(status_code=400, detail="Parent node not found")
 
-    node = TreeNode(label=data.label, parent_id=data.parentId)
+    node = TreeNode(label=data.label, parent_id=parent_id)
     session.add(node)
-
     try:
         session.commit()
         session.refresh(node)
-        node.children
+        node.children  # preload for serialization
         return node
     except IntegrityError:
         session.rollback()
