@@ -16,7 +16,7 @@ def create_node(session: Session, data: TreeNodeCreate):
     try:
         session.commit()
         session.refresh(node)
-        node.children  # preload for serialization
+        node.children
         return node
     except IntegrityError:
         session.rollback()
