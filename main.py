@@ -30,3 +30,8 @@ def smart_suggestions(parentId: int):
         if not parent:
             raise HTTPException(status_code=404, detail="Parent not found")
         return ml_suggester.suggest(parent.label)
+
+@app.post("/api/clone-tree", response_model=TreeNodeRead)
+def clone_tree():
+    with Session(engine) as session:
+        return crud.clone_tree(session)

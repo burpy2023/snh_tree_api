@@ -22,6 +22,8 @@ def create_node(session: Session, data: TreeNodeCreate):
         session.rollback()
         raise HTTPException(status_code=400, detail="Label must be unique")
 
+def clone_tree(session: Session):
+    
 
 
 def get_full_tree(session: Session):

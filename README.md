@@ -24,7 +24,9 @@ uvicorn main:app --reload
 
 127.0.0.1:8000/docs
 
-# press the try it out button on the get and post api to send custom requests
+press the "try it out" button on the get and post api to send custom requests
+
+Additionally 
 
 # running the unit tests
 
